@@ -1,0 +1,74 @@
+{
+  "data_manager": {
+    "data_dir": "data",
+    "use_real_data": true,
+    "target_dataset_size": 20000,
+    "real_news_subreddits": [
+      "news",
+      "worldnews", 
+      "politics",
+      "technology",
+      "science",
+      "business",
+      "economics",
+      "health",
+      "environment"
+    ],
+    "fake_news_subreddits": [
+      "conspiracy",
+      "fakenews",
+      "satire",
+      "theonion",
+      "nottheonion",
+      "unpopularopinion"
+    ],
+    "wikipedia_categories": [
+      "Current events",
+      "Politics", 
+      "Science",
+      "Technology",
+      "Health",
+      "Environment",
+      "Economics"
+    ],
+    "news_urls": [
+      "https://www.reuters.com",
+      "https://www.bbc.com/news",
+      "https://www.npr.org",
+      "https://www.ap.org"
+    ]
+  },
+  "model_trainer": {
+    "models_dir": "data/models",
+    "cv_folds": 5,
+    "random_state": 42,
+    "enable_hyperparameter_tuning": true,
+    "logistic_regression": {
+      "max_iter": 1000,
+      "random_state": 42,
+      "class_weight": "balanced"
+    },
+    "svm": {
+      "kernel": "linear",
+      "random_state": 42,
+      "class_weight": "balanced"
+    },
+    "passive_aggressive": {
+      "random_state": 42,
+      "class_weight": "balanced"
+    },
+    "ensemble": {
+      "voting": "soft",
+      "weights": null
+    }
+  },
+  "evaluation_manager": {
+    "output_dir": "data/evaluation",
+    "figure_size": [10, 8],
+    "dpi": 300,
+    "save_plots": true
+  },
+  "test_size": 0.2,
+  "random_state": 42,
+  "run_cross_validation": true
+}

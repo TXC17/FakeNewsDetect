@@ -1,0 +1,60 @@
+{
+  "model": {
+    "max_features": 10000,
+    "ngram_range": [1, 2],
+    "min_df": 2,
+    "max_df": 0.95,
+    "random_state": 42,
+    "test_size": 0.2,
+    "cv_folds": 5,
+    "logistic_regression_params": {
+      "C": 1.0,
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "svm_params": {
+      "C": 1.0,
+      "kernel": "linear",
+      "random_state": 42
+    },
+    "passive_aggressive_params": {
+      "C": 1.0,
+      "random_state": 42,
+      "max_iter": 1000
+    }
+  },
+  "data": {
+    "min_content_length": 10,
+    "max_content_length": 10000,
+    "target_dataset_size": 20000,
+    "balance_threshold": 0.4,
+    "reddit_subreddits": [
+      "news",
+      "worldnews",
+      "politics",
+      "technology",
+      "science",
+      "conspiracy",
+      "fakenews"
+    ],
+    "wikipedia_categories": [
+      "Current events",
+      "Politics",
+      "Science",
+      "Technology"
+    ],
+    "news_websites": [
+      "https://www.reuters.com",
+      "https://www.bbc.com/news",
+      "https://www.npr.org"
+    ]
+  },
+  "system": {
+    "prediction_timeout": 5.0,
+    "batch_size": 100,
+    "cache_enabled": true,
+    "log_level": "INFO",
+    "model_save_path": "data/models",
+    "data_save_path": "data/processed"
+  }
+}

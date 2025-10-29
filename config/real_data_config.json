@@ -1,0 +1,58 @@
+{
+  "collection_settings": {
+    "target_total_size": 20000,
+    "real_news_ratio": 0.5,
+    "enable_reddit": true,
+    "enable_web_scraping": true,
+    "enable_wikipedia": true
+  },
+  "data_sources": {
+    "trusted_news_sites": [
+      "https://www.reuters.com",
+      "https://www.bbc.com/news",
+      "https://www.npr.org/sections/news",
+      "https://apnews.com",
+      "https://www.bloomberg.com/news",
+      "https://www.wsj.com/news",
+      "https://www.theguardian.com/us-news"
+    ],
+    "real_news_subreddits": [
+      "news",
+      "worldnews",
+      "politics",
+      "technology",
+      "science",
+      "business",
+      "economics",
+      "health",
+      "environment",
+      "education"
+    ],
+    "fake_news_subreddits": [
+      "conspiracy",
+      "fakenews",
+      "satire",
+      "theonion",
+      "nottheonion",
+      "unpopularopinion"
+    ],
+    "wikipedia_categories": [
+      "Current events",
+      "Politics",
+      "Science",
+      "Technology",
+      "Health",
+      "Environment",
+      "Economics",
+      "Business"
+    ]
+  },
+  "quality_filters": {
+    "min_content_length": 100,
+    "max_content_length": 10000,
+    "min_title_length": 10,
+    "max_title_length": 200,
+    "remove_duplicates": true,
+    "validate_language": true
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "deployment": {
+    "environment": "production",
+    "host": "0.0.0.0",
+    "port": 8501,
+    "debug": false,
+    "auto_reload": false,
+    "max_upload_size": 200,
+    "enable_cors": true,
+    "allowed_origins": ["*"]
+  },
+  "security": {
+    "enable_https": false,
+    "ssl_cert_path": null,
+    "ssl_key_path": null,
+    "session_timeout": 3600,
+    "max_concurrent_users": 100
+  },
+  "performance": {
+    "cache_ttl": 300,
+    "max_memory_usage": "2GB",
+    "worker_processes": 1,
+    "request_timeout": 30,
+    "enable_compression": true
+  },
+  "monitoring": {
+    "enable_metrics": true,
+    "metrics_port": 9090,
+    "health_check_endpoint": "/health",
+    "log_requests": true,
+    "enable_profiling": false
+  },
+  "features": {
+    "enable_batch_processing": true,
+    "max_batch_size": 50,
+    "enable_api_mode": false,
+    "enable_file_upload": false,
+    "enable_history": true,
+    "max_history_items": 100
+  }
+}
