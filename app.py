@@ -105,49 +105,64 @@ def load_prediction_service() -> Optional[PredictionService]:
         PredictionService instance or None if loading fails
     """
     try:
-        # Try to load the trained model and processor
-        # This is a placeholder - actual implementation would load from saved files
-        st.info("🔄 Loading AI model... This may take a moment.")
-        
-        # For demo purposes, we'll create a mock service
-        # In production, this would load actual trained models
+        # Initialize processor quickly
         processor = ContentProcessor()
         
-        # Fit the processor with real training data
-        try:
-            import json
-            # Try to load real training data first
-            train_data_file = None
-            for file in ['data/processed/train_data.json', 'data/processed/combined_dataset.json']:
-                if os.path.exists(file):
-                    train_data_file = file
-                    break
-            
-            if train_data_file:
-                with open(train_data_file, 'r') as f:
-                    train_data = json.load(f)
-            else:
-                # Fallback to demo data if real data not available
-                with open('data/processed/train_data.json', 'r') as f:
-                    train_data = json.load(f)
-            
-            # Extract texts and labels for fitting
-            texts = [item['content'] for item in train_data[:100]]  # Use first 100 for demo
-            labels = [item['label'] for item in train_data[:100]]
-            
-            # Fit the processor
-            processor.fit(texts, labels)
-            
-        except Exception as e:
-            # If demo data is not available, use sample data for fitting
-            from sample_data import get_sample_data
-            sample_data = get_sample_data()
-            mock_texts = [item['content'] for item in sample_data]
-            mock_labels = [item['label'] for item in sample_data]
-            processor.fit(mock_texts, mock_labels)
+        # Use sample data for fitting (always available)
+        from sample_data import get_sample_data
+        sample_data = get_sample_data()
+        mock_texts = [item['content'] for item in sample_data]
+        mock_labels = [item['label'] for item in sample_data]
+        processor.fit(mock_texts, mock_labels)
         
-        # Mock classifier for demonstration
-        class MockClassifier(MLClassifierInterface):
+        # Try to load real trained models first
+        classifier = None
+        
+        # Check for trained ensemble model
+        ensemble_path = "data/models/ensemble_model.pkl"
+        if os.path.exists(ensemble_path):
+            try:
+                from src.models.ensemble_classifier import EnsembleClassifier
+                classifier = EnsembleClassifier()
+                classifier.load_model(ensemble_path)
+                st.info("✅ Using trained Ensemble AI model")
+            except Exception as e:
+                st.warning(f"Failed to load ensemble model: {e}")
+        
+        # Fallback to individual models
+        if classifier is None:
+            model_files = {
+                "logistic_regression_model.pkl": "LogisticRegressionClassifier",
+                "svm_model.pkl": "SVMClassifier", 
+                "passive_aggressive_model.pkl": "PassiveAggressiveClassifier"
+            }
+            
+            for model_file, model_class in model_files.items():
+                model_path = f"data/models/{model_file}"
+                if os.path.exists(model_path):
+                    try:
+                        if model_class == "LogisticRegressionClassifier":
+                            from src.models.logistic_regression_classifier import LogisticRegressionClassifier
+                            classifier = LogisticRegressionClassifier()
+                        elif model_class == "SVMClassifier":
+                            from src.models.svm_classifier import SVMClassifier
+                            classifier = SVMClassifier()
+                        elif model_class == "PassiveAggressiveClassifier":
+                            from src.models.passive_aggressive_classifier import PassiveAggressiveClassifier
+                            classifier = PassiveAggressiveClassifier()
+                        
+                        classifier.load_model(model_path)
+                        st.info(f"✅ Using trained {model_class} AI model")
+                        break
+                    except Exception as e:
+                        st.warning(f"Failed to load {model_class}: {e}")
+        
+        # Fallback to mock classifier if no trained models available
+        if classifier is None:
+            st.warning("⚠️ No trained models found. Using demo mode with mock predictions.")
+            st.info("💡 To use real AI: Run `python collect_real_data.py` then `python train_enhanced_model.py`")
+            
+            class MockClassifier(MLClassifierInterface):
             def __init__(self):
                 super().__init__()
                 self.is_trained = True
@@ -202,9 +217,8 @@ def load_prediction_service() -> Optional[PredictionService]:
         return service
         
     except Exception as e:
-        st.error(f"❌ Failed to load AI model: {str(e)}")
         logger.error(f"Failed to load prediction service: {e}")
-        return None
+        raise e  # Re-raise to be handled by caller
 
 
 def display_error_message(error_type: str, message: str, suggestions: list = None):
@@ -386,11 +400,21 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Load prediction service
-    prediction_service = load_prediction_service()
+    # Load prediction service with session state caching
+    if 'prediction_service' not in st.session_state:
+        try:
+            with st.spinner("🔄 Loading AI model... This may take a moment."):
+                st.session_state.prediction_service = load_prediction_service()
+        except Exception as e:
+            st.error(f"❌ Failed to initialize AI model: {str(e)}")
+            st.info("💡 Try the debug version: `streamlit run app_debug.py --server.port 8503`")
+            st.stop()
+    
+    prediction_service = st.session_state.prediction_service
     
     if prediction_service is None:
-        st.error("❌ The AI model is currently unavailable. Please try again later.")
+        st.error("❌ The AI model is currently unavailable.")
+        st.info("💡 Try the debug version to identify the issue.")
         st.stop()
     
     # Sidebar with information and settings

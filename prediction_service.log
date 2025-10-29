@@ -1,0 +1,16 @@
+2025-10-29 20:28:31,224 - src.preprocessing.nlp_processor - INFO - Loaded spaCy English model successfully
+2025-10-29 20:28:31,225 - src.preprocessing.content_processor - INFO - ContentProcessor initialized successfully
+2025-10-29 20:28:31,231 - src.preprocessing.content_processor - INFO - Fitting ContentProcessor on 6 texts
+2025-10-29 20:28:31,381 - src.preprocessing.feature_extractor - INFO - Fitting feature extractor on 6 texts
+2025-10-29 20:28:31,384 - src.preprocessing.feature_extractor - INFO - TF-IDF vectorizer fitted. Shape: (6, 16)
+2025-10-29 20:28:31,384 - src.preprocessing.feature_extractor - INFO - Feature extraction fitted successfully. Final features: 16
+2025-10-29 20:28:31,388 - src.preprocessing.content_processor - INFO - ContentProcessor fitted successfully
+2025-10-29 20:28:31,389 - src.api.prediction_service - INFO - PredictionService initialized successfully with comprehensive error handling
+2025-10-29 20:35:16,981 - src.preprocessing.nlp_processor - INFO - Loaded spaCy English model successfully
+2025-10-29 20:35:16,982 - src.preprocessing.content_processor - INFO - ContentProcessor initialized successfully
+2025-10-29 20:35:16,982 - src.preprocessing.content_processor - INFO - Fitting ContentProcessor on 6 texts
+2025-10-29 20:35:17,163 - src.preprocessing.feature_extractor - INFO - Fitting feature extractor on 6 texts
+2025-10-29 20:35:17,165 - src.preprocessing.feature_extractor - INFO - TF-IDF vectorizer fitted. Shape: (6, 16)
+2025-10-29 20:35:17,166 - src.preprocessing.feature_extractor - INFO - Feature extraction fitted successfully. Final features: 16
+2025-10-29 20:35:17,166 - src.preprocessing.content_processor - INFO - ContentProcessor fitted successfully
+2025-10-29 20:35:17,166 - src.api.prediction_service - INFO - PredictionService initialized successfully with comprehensive error handling
